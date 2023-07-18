@@ -1,11 +1,10 @@
 <?php
-
+use App\Http\Controllers\PeliController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\MovieController;
-use App\Http\Controllers\PeliController;
+
 
 Route::get('hi', function () {
     return Inertia::render('Welcome', [
@@ -22,9 +21,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+        Route::get('/dashboard', function () {
+                return Inertia::render('Dashboard');
+            })->name('dashboard');
 });
 
 
