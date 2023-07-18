@@ -3,13 +3,13 @@
 import MovieLayout from '@/Layouts/MovieLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import Banner1 from '@/Components/Banner1.vue';
-import NavBar from '@/Components/NavBar.vue';
 import CarouselMovies from '../Components/CarouselMovies.vue';
 
 defineProps({
    
 });
 </script>
+
 <template>
     <MovieLayout title="Inicio"/>
     <Banner1/>
