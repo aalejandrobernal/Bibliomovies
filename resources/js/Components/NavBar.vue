@@ -79,9 +79,9 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Banner1 from '@/Components/Banner1.vue';
   
   const navigation = [
-    { name: 'Peliculas', href: 'movie' },
-    { name: 'Música', href: 'noticiaVue',  },
-    // { name: 'DVD Informativos', href: '#', current: false },
+    // { name: 'Peliculas', href: 'movie' },
+    { name: 'Prueba', href: 'movie1',  },
+    // { name: 'DVD Informativos', href: '/' },
     // { name: 'Docuemntales', href: '#', current: false },
   ]
   </script>

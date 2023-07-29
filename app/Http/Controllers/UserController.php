@@ -11,11 +11,11 @@ class UserController extends Controller
     public function noticiaVue()
     {
         $User = User::all();
-       return  response()->json($User);
+        return  response()->json($User);
     }
     public function movies()
     {
         $movies= Movie::all();
-       return  response()->json($movies);
+        return  response()->json($movies);
     }
 }

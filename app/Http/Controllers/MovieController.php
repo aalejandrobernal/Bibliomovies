@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class MovieController extends Controller
 {
@@ -13,8 +14,9 @@ class MovieController extends Controller
      */
     public function index()
     {
-       
-        return Inertia::render('Movies');
+        $movies = Movie::all();
+        return $movies;
+        // return Inertia::render('Movies');
     }
    
     /**
@@ -64,4 +66,30 @@ class MovieController extends Controller
     {
         //
     }
+    public function mostrar()
+    {
+        $movies = Movie::where('ESTADO', 1)->get();
+        foreach ($movies as $movie) {
+            $x=$movie->TOPOGRAFICO.'.jpg';
+            if(file_exists('storage/images/img/'.$x)){
+                $y=Movie::where('ID',$movie->ID)->first();
+                $y->IMG=$x; 
+                
+                 
+                 $y->update(['IMG'=>$x]);
+                 Log::info($y);
+               }
+            
+        }
+        
+        return  response()->json($movies);
+        // return Inertia::render('Movie', ['movie' => $movies]);
+    }
+    public function modificar ($movie, Movie $movies )   
+    {
+       
+        //
+           
+    }
+
 }

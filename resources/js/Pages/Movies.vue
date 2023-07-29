@@ -12,10 +12,13 @@ defineProps({
 
 <template>
     <MovieLayout title="Inicio"/>
+    
     <Banner1/>
+    <div class="dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
     <div class="px-32">
         <CarouselMovies/>
     </div>
+</div>
 </template>
 <style>
 .bg-dots-darker {

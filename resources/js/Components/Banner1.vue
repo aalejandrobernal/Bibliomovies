@@ -1,5 +1,5 @@
 <template>
-  <div class="pelicula-principal">
+  <div class="pelicula-principal ">
 			<div class="contenedor">
 				<h3 class="titulo">Interestellar</h3>
 				<p class="descripcion">
@@ -45,5 +45,6 @@
 	margin-bottom: 3.12em;
 	display: flex;
 	align-items: flex-end;
+  margin: 0;
 }
 </style>

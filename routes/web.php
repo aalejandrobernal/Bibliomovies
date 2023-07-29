@@ -49,9 +49,22 @@ Route::get('/',  function (){
     //  ->middleware('auth')
     ->name('/')
     ;
-Route::get('/movie', [PeliController::class, 'mostrar'], function () {
+Route::get('/movie', function () {
     return Inertia::render('Movie');
     })
     // ->middleware('auth')
     ->name('movie')
+    ;
+
+Route::get('/movie1', function () {
+        return Inertia::render('Mov');
+        })
+        // ->middleware('auth')
+        ->name('movie1')
+        ;
+
+
+Route::get('/mov',[MovieController::class, 'mostrar'])
+    // ->middleware('auth')
+    ->name('mov')
     ;
