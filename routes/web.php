@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PeliController;
+use App\Http\Controllers\IndexController;
 
 Route::get('hi', function () {
     return Inertia::render('Welcome', [
@@ -25,6 +26,13 @@ Route::middleware([
 Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+Route::get('/modmovies', function () {
+        return Inertia::render('Modmovies');
+    })->name('modmovies');
+
+Route::post('/modificarmovie', [IndexController::class, 'mod'])
+    ->name('mod');
 });
 
 
@@ -68,3 +76,4 @@ Route::get('/mov',[MovieController::class, 'mostrar'])
     // ->middleware('auth')
     ->name('mov')
     ;
+

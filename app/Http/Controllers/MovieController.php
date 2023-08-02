@@ -69,21 +69,19 @@ class MovieController extends Controller
     public function mostrar()
     {
         $movies = Movie::where('ESTADO', 1)->get();
-        foreach ($movies as $movie) {
-            $x=$movie->TOPOGRAFICO.'.jpg';
-            if(file_exists('storage/images/img/'.$x)){
-                $y=Movie::where('ID',$movie->ID)->first();
-                $y->IMG=$x; 
-                
-                 
-                 $y->update(['IMG'=>$x]);
-                 Log::info($y);
-               }
+        // foreach ($movies as $movie) {
+        //     $x=$movie->TOPOGRAFICO.'.jpg';
+        //     if(file_exists('storage/images/img/'.$x)){
+        //         $y=Movie::where('ID',$movie->ID)->first();
+        //         $y->IMG=$x; 
+        //          $y->update(['IMG'=>$x]);
+        //          Log::info($y);
+        //        }
             
-        }
+        // }
         
         return  response()->json($movies);
-        // return Inertia::render('Movie', ['movie' => $movies]);
+        //  return Inertia::render('Movie', ['movie' => $movies]);
     }
     public function modificar ($movie, Movie $movies )   
     {
