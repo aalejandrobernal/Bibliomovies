@@ -6,12 +6,15 @@ import MovieLayout from '@/Layouts/MovieLayout.vue';
 <script>
 import axios from 'axios';
 import swal from "sweetalert2";
+
     export default {
         name:'Modmovies',
+        
         data(){
             return{
                 peiculas: [],
-                variants: ['cnt'],                
+                variants: ['cnt'], 
+                file: null,               
                 data:{
                     titulo: '',
                     audiencia: '',
@@ -20,7 +23,14 @@ import swal from "sweetalert2";
                     tipo_material: '',
                     publico: '',
                     categoria: '',
-                }
+                    file: null,
+                },
+                fields:{
+                    titulo :'',
+                    comments:'',
+                    file: null,
+                } ,
+                
                 
         }
         },
@@ -64,6 +74,36 @@ import swal from "sweetalert2";
                 axios.post('/modificarmovie', this.data)
                 .then((res) => { })
                 .catch((err) => console.log(err))
+            },
+            validateImg() {
+                if (this.fields.file === null) {
+                    this.errorMessage3 = 'no se ha cargado alguna imagen';
+                    return false;
+                }
+                    this.errorMessage = '';
+                    return true;
+            },
+            ObtenerImagen(e){
+                this.fields.file = e.target.files[0] ;
+                this.CargarImage(this.fields.file);
+            },
+            CargarImage(files){
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.data.file = e.target.result;
+                    this.fotonone = e.target.result;
+                };
+                reader.readAsDataURL(files);
+                this.EnviarImagen();
+            },
+            EnviarImagen(event){
+                
+                let formData = new FormData();
+                for(let key in this.fields){
+                    formData.append(key, this.fields[key]);
+                }
+                console.log(formData);
+               
             },
        },
     }
@@ -214,20 +254,50 @@ import swal from "sweetalert2";
                         </div>
                         
                     </div>
-                     <div class="flex flex-wrap -mx-3 mb-6">
-                                    <div class="w-full px-3">
-                                      <label class="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2" for="grid-password">
-                                        descripción
-                                      </label>
-                                      <div class="flex items-center border-b border-red-500 py-2">
-                                        <textarea class="appearance-none bg-transparent border-none w-full text-white-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                                        v-model="data.descripcion"
-                                        ></textarea>
-                                      <!-- <input class="appearance-none bg-transparent border-none w-full text-white-700 mr-3 py-1 px-2 leading-tight focus:outline-none" id="grid-password" type="password" placeholder="******************"> -->
-                                    </div>
-                                      <p class="text-white-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-                                    </div>
-                                  </div>
+                    <div class="flex flex-wrap -mx-3 mb-6">
+                        <div class="w-full px-3">
+                            <label class="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2" for="grid-password">
+                                descripción
+                            </label>
+                            <div class="flex items-center border-b border-red-500 py-2">
+                                <textarea class="appearance-none bg-transparent border-none w-full text-white-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                                v-model="data.descripcion"
+                                ></textarea>
+                            </div>
+                            <p class="text-white-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap -mx-3 mb-8">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2" for="grid-first-name">
+                                imagen
+                            </label>
+                            <div class="flex items-center border-b border-red-500 py-2">
+                                <input type="file"  
+                                @input="validateImg" 
+                                @change="ObtenerImagen" 
+                                accept="image/*"
+                                class="file-input w-full max-w-xs" />
+                            </div>
+                            <p class="text-red-500 text-xs italic">Por favor rellene este campo.</p>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3" v-if="data.file">
+                            <div class="avatar">
+                                <div class="w-24 rounded">
+                                    <img :src="data.file"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="w-full md:w-1/2 px-3" >
+                            <div class="avatar">
+                                <div class="w-24 rounded">
+                                  <img src="storage/images/fotonone.svg"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                                  
                     <div class="modal-action">
                     <!-- if there is a button in form, it will close the modal -->
                     <button class="btn">Guardar</button>
