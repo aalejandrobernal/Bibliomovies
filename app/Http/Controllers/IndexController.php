@@ -106,5 +106,26 @@ class IndexController extends BaseController
         // Log::info($movie);
         // return $users;
     }
+    public function modimg( Request $request , Movie $movie)
+    {
+        
+        if($request->hasFile('image')){
+            $nombre_img=$request->input('topografico');
+            $extension= $request->file('image')->getClientOriginalExtension();
+            $nombre_foto=$nombre_img.'.'.$extension;
+            $request->merge(['img'=>$nombre_foto]);
+            $image = $request->file('image');
+            $img = Image::make($image->getRealPath())->encode('jpg', 65)
+                ->fit(591, 591,function ($c) {
+                $c->aspectRatio();
+                $c->upsize();
+            });
+            
+            $y=Movie::where('topografico',$request->input('topografico'))->first();
+            $y->update($request->input('img'));
+            Log::info($request->all());
+            // Storage::disk('local')->put('public/images/fotos' . '/' . $nombre_foto, $img, 'public');
+        }
+    }
 
 }

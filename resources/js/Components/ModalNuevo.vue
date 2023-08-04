@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+// import { defineProps } from 'vue';
 
 defineProps({
     Modalid: Number,
@@ -15,29 +15,12 @@ let formData = new FormData();
     data(){
         return{
             // Modalid: 0,
-            ImageData: {
-                img: null,
-               
+            ImagenData: {
+                image: null,
+                topografico: '',               
             },
         }
     },
-    // async mounted(){
-    //        for(let key in this.dataNuevo){
-    //             this.dataNuevo[key] = this.data[key];
-    //             this.dataNuevo['file'] = this.data['img'];
-    //             this.Modalid = this.data['id'];
-    //             this.dataNuevo['topografico'] = this.data['topografico'];
-    //             this.dataNuevo['tipo_material'] = this.data['tipo_material'];
-    //             this.dataNuevo['publico'] = this.data['publico'];
-    //             this.dataNuevo['categoria'] = this.data['categoria'];
-    //             this.dataNuevo['audiencia'] = this.data['audiencia'];
-    //             this.dataNuevo['descripcion'] = this.data['descripcion'];
-
-
-    //         }
-            
-            
-    //     },
     methods:{
         onSubmit(){
             this.ActualizarPass();
@@ -46,6 +29,13 @@ let formData = new FormData();
         ActualizarPass(){
             //  console.log(formData.get('titulo'));
             axios.put('/modifiMov', this.data)
+            .then((res) => { })
+            .catch((err) => console.log(err))
+            axios.post('/modifiMov', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
             .then((res) => { })
             .catch((err) => console.log(err))
         },
@@ -58,19 +48,21 @@ let formData = new FormData();
                 return true;
             },
         ObtenerImagen(e){
-            this.data.file = e.target.files[0] ;
-            this.CargarImage(this.data.file);
+            this.ImagenData.img = e.target.files[0] ;
+            this.CargarImage(this.ImagenData.img);
         },
         CargarImage(files){
             let reader = new FileReader();
             reader.onload = (e) => {
-                 this.data.file = e.target.result;
+                this.ImagenData.img = e.target.result;
             };
             reader.readAsDataURL(files);
-            for(let key in this.data){
-                formData.append(key, this.data[key]);
-                console.log(key + '-> ' + this.data[key]);
-            }
+            formData.append('image',this.ImagenData.img );
+            formData.append('topografico',this.data.topografico );
+            // for(let key in this.data){
+            //     formData.append(key, this.data[key]);
+            //     console.log(key + '-> ' + this.data[key]);
+            // }
                 // if(this.data.img != null){
                 //     this.data.img = formData;
                 // }
@@ -245,6 +237,13 @@ let formData = new FormData();
                     <div class="avatar">
                         <div class="w-24 rounded">
                             <img :src="'storage/images/img/'+data.img"/>
+                        </div>
+                    </div>
+                </div>
+                <div v-else-if="ImagenData.img" class="w-full md:w-1/2 px-3" >
+                    <div class="avatar">
+                        <div class="w-24 rounded">
+                          <img :src="ImagenData.img"/>
                         </div>
                     </div>
                 </div>

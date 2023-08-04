@@ -38,6 +38,9 @@ Route::post('/modificarmovie', [IndexController::class, 'mod'])
 Route::put('/modifiMov', [IndexController::class, 'modmov'])
     ->name('modmov');
 
+Route::post('/modifiMov', [IndexController::class, 'modimg'])
+    ->name('modimg');
+
 // Route::resource('admin/users',MovieController::class)
 //     ->only('index','edit','create','store','update','show')
     
