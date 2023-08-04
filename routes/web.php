@@ -33,6 +33,15 @@ Route::get('/modmovies', function () {
 
 Route::post('/modificarmovie', [IndexController::class, 'mod'])
     ->name('mod');
+
+
+Route::put('/modifiMov', [IndexController::class, 'modmov'])
+    ->name('modmov');
+
+// Route::resource('admin/users',MovieController::class)
+//     ->only('index','edit','create','store','update','show')
+    
+//     ->names('admin.users');
 });
 
 

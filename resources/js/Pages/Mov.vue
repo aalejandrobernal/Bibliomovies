@@ -45,9 +45,17 @@ import axios from 'axios';
        <div class="grid grid-cols-5 gap5">
         <div v-for="item in peiculas" :key="item.id" class="px-10">
             <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
-                    <img class="rounded-t-lg" :src="'storage/images/img/'+item.topografico+'.jpg'" alt="" />
-                </a>
+                <div v-if="item.img">
+                    <a href="#">
+                        <img class="rounded-t-lg" :src="'storage/images/img/'+item.topografico+'.jpg'" alt="" />
+                    </a>
+                </div>
+                <div v-else>
+                    <a href="#">
+                        <img class="rounded-t-lg" src="storage/images/fotonone.svg" alt="" />
+                    </a>
+                </div>
+                
                 <div class="p-5">
                     <a href="#">
                         <h5 class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white">{{item.titulo}}</h5>

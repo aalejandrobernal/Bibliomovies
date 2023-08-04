@@ -1,12 +1,11 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
-import MovieLayout from '@/Layouts/MovieLayout.vue';
+import ModalNuevo from '@/Components/ModalNuevo.vue';
 </script>
 <script>
 import axios from 'axios';
 import swal from "sweetalert2";
-
+let formData = new FormData();
     export default {
         name:'Modmovies',
         
@@ -24,25 +23,29 @@ import swal from "sweetalert2";
                     publico: '',
                     categoria: '',
                     file: null,
+                    
                 },
-                fields:{
-                    titulo :'',
-                    comments:'',
-                    file: null,
-                } ,
-                
-                
+               currenpage: 1,
+               pages:'',
+               total:'',
         }
         },
-        created(){
-            this.getNoticias(); 
-             
-       },
+        async mounted(){
+            await this.getNoticias();
+            
+        },
        methods:{
-           getNoticias(){
-            axios.get('/mov')
-            .then((res) => this.peiculas=res.data)
-            // .then((res) => console.log(res))
+        async getNoticias(page){
+            page = page || this.currenpage;
+            await axios.get('/mov?page='+page)
+            .then((response) =>{
+                this.peiculas=response.data.data;
+                this.currenpage=response.data.current_page;
+                this.pages=response.data.last_page;
+                this.total=response.data.total;
+                
+            
+            })
             .catch((err) => console.log(err))
            },
            onSubmit(event) {
@@ -69,14 +72,12 @@ import swal from "sweetalert2";
             
            },
            ActualizarPass(){
-                
-                console.log(this.data);
-                axios.post('/modificarmovie', this.data)
+                axios.post('/modificarmovie', formData)
                 .then((res) => { })
                 .catch((err) => console.log(err))
             },
             validateImg() {
-                if (this.fields.file === null) {
+                if (this.data.file === null) {
                     this.errorMessage3 = 'no se ha cargado alguna imagen';
                     return false;
                 }
@@ -84,27 +85,24 @@ import swal from "sweetalert2";
                     return true;
             },
             ObtenerImagen(e){
-                this.fields.file = e.target.files[0] ;
-                this.CargarImage(this.fields.file);
+                this.data.file = e.target.files[0] ;
+                this.CargarImage(this.data.file);
             },
             CargarImage(files){
                 let reader = new FileReader();
                 reader.onload = (e) => {
                     this.data.file = e.target.result;
-                    this.fotonone = e.target.result;
                 };
                 reader.readAsDataURL(files);
-                this.EnviarImagen();
-            },
-            EnviarImagen(event){
-                
-                let formData = new FormData();
-                for(let key in this.fields){
-                    formData.append(key, this.fields[key]);
+                for(let key in this.data){
+                    formData.append(key, this.data[key]);
+                    console.log(key + '-> ' + this.data[key]);
                 }
-                console.log(formData);
-               
+                // if(this.data.img != null){
+                //     this.data.img = formData;
+                // }
             },
+            
        },
     }
    
@@ -122,10 +120,12 @@ import swal from "sweetalert2";
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-10">
                 <!-- ***************************************************** -->
-                <button class="btn" onclick="my_modal_1.showModal()">open modal</button>
+                
+                <button class="btn" onclick="my_modal_1.showModal()">Nuevo material</button>
                 <dialog id="my_modal_1" class="modal">
                 <form method="dialog" @submit="onSubmit" class="modal-box w-11/12 max-w-5xl">
-                    <h3 class="font-bold text-lg">Hello!</h3>
+                    <h3 class="font-bold text-lg">hola
+                    </h3>
                     <div class="flex flex-wrap -mx-3 mb-8">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2" for="grid-first-name">
@@ -277,6 +277,7 @@ import swal from "sweetalert2";
                                 @input="validateImg" 
                                 @change="ObtenerImagen" 
                                 accept="image/*"
+                                required
                                 class="file-input w-full max-w-xs" />
                             </div>
                             <p class="text-red-500 text-xs italic">Por favor rellene este campo.</p>
@@ -305,9 +306,7 @@ import swal from "sweetalert2";
                 </form>
                 </dialog>
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    
                     <div class="relative overflow-x-auto">
-                    
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -338,8 +337,6 @@ import swal from "sweetalert2";
                                     </th>
                                 </tr>
                             </thead>
-                            
-
                             <tbody v-for="item in peiculas" :key="item.id" >
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -368,26 +365,58 @@ import swal from "sweetalert2";
                                         {{ item.trailer }}
                                     </td>
                                     <td class="px-6 py-2">
-                                        <button class="btn" :onclick="'my_modal_'+item.id+'.showModal()'">open modal</button>
-                                        <dialog :id="'my_modal_'+item.id" class="modal">
-                                        <form method="dialog" class="modal-box">
-                                            <h3 class="font-bold text-lg">Hello!</h3>
-                                            <p class="py-4">Press ESC key or click the button below to close</p>
-                                            <div class="modal-action">
-                                            <!-- if there is a button in form, it will close the modal -->
-                                            <button class="btn">Close</button>
-                                            </div>
-                                        </form>
-                                        </dialog>
-                                    
+                                         <ModalNuevo :Modalid="item.id" :data="item"/>
                                     </td>
                                 </tr>
+                                
                             </tbody>
                             
                         </table>
+                        
                     </div>
+                    
                 </div>
+                <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                    <div class="flex flex-1 justify-between sm:hidden">
+                      <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+                      <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+                    </div>
+                    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                      <div>
+                        <p class="text-sm text-gray-700">
+                         pagina
+                          <span class="font-medium">{{currenpage}}</span>
+                          de
+                          <span class="font-medium">{{pages}}</span>
+                          de
+                          <span class="font-medium">{{total}}</span>
+                          resultados
+                        </p>
+                      </div>
+                      <div>
+                        <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                          <a @click="getNoticias(currenpage-1)" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <span class="sr-only">Anterior</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                            </svg>
+                          </a>
+                          <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
+                          <a  @click="getNoticias(page)" aria-current="page" v-for="page in pages" v-bind:key="page" v-bind:class="{'relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600': page==currenpage}"  class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{page}}</a>
+                          
+                          
+                          <a @click="getNoticias(currenpage+1)" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <span class="sr-only">Proximo</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                            </svg>
+                          </a>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
             </div>
+            
         </div>
     <!-- </MovieLayout> -->
     
