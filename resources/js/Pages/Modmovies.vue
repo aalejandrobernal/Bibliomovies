@@ -22,8 +22,7 @@ let formData = new FormData();
                     tipo_material: '',
                     publico: '',
                     categoria: '',
-                    file: null,
-                    
+                    file: null,                    
                 },
                currenpage: 1,
                pages:'',
@@ -365,7 +364,7 @@ let formData = new FormData();
                                         {{ item.trailer }}
                                     </td>
                                     <td class="px-6 py-2">
-                                         <ModalNuevo :Modalid="item.id" :data="item"/>
+                                        <ModalNuevo :Modalid="item.id" :data="item"/>
                                     </td>
                                 </tr>
                                 

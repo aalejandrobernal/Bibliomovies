@@ -76,6 +76,16 @@ class MovieController extends Controller
         return  response()->json($movies);
         //  return Inertia::render('Movie', ['movie' => $movies]);
     }
+    public function mostrar1()
+    {
+        $movies = Movie::where('estado', 1)->get();
+        // Log::info($movies);
+        // $this->modificar($movies);
+        
+        
+        return  response()->json($movies);
+        //  return Inertia::render('Movie', ['movie' => $movies]);
+    }
     public function modificar ($movies)
     {
         

@@ -27,6 +27,7 @@
           </div>
           <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <Link :href="route('login')" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Ingreso</Link>
+            <Link :href="route('register')" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</Link>
             <!-- <button type="button" class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <span class="sr-only">View notifications</span>
               <BellIcon class="h-6 w-6" aria-hidden="true" />
@@ -80,7 +81,7 @@ import Banner1 from '@/Components/Banner1.vue';
   
   const navigation = [
     // { name: 'Peliculas', href: 'movie' },
-    { name: 'Prueba', href: 'movie1',  },
+    { name: 'Peliculas', href: 'movie1',  },
     // { name: 'DVD Informativos', href: '/' },
     // { name: 'Docuemntales', href: '#', current: false },
   ]

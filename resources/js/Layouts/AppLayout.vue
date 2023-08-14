@@ -57,6 +57,7 @@ const logout = () => {
                                     Peliculas
                                 </NavLink>
                             </div>
+                            <!-- <NavLink :href="route('register')" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</NavLink> -->
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -141,6 +142,7 @@ const logout = () => {
 
                                     <template #content>
                                         <!-- Account Management -->
+                                        
                                         <div class="block px-4 py-2 text-xs text-gray-400">
                                             Administrar cuenta
                                         </div>
@@ -148,6 +150,7 @@ const logout = () => {
                                         <DropdownLink :href="route('profile.show')">
                                             Mi perfil
                                         </DropdownLink>
+                                        
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                             API Tokens

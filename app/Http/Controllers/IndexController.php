@@ -20,7 +20,7 @@ class IndexController extends BaseController
     public function noticiaVue()
     {
         $movies= Movie::all();
-       return  response()->json($movies);
+        return  response()->json($movies);
     }
     public function movies()
     {
@@ -41,7 +41,7 @@ class IndexController extends BaseController
         ]);
         // convierte el atributo TOPOGRAFICO en mayusculas
         $request->merge(['topografico'=>mb_strtoupper($request->topografico)]);
-        // predefine el estado ce cada materian en estado activo
+        // predefine el estado ce cada material en estado activo
         $request->merge(['estado'=>1]);
         // registra el usuario que esta registrando la materia
         $request->merge(['user'=>$user->email] );
@@ -58,7 +58,7 @@ class IndexController extends BaseController
                 $c->upsize();
             });
             Log::info($request->all());
-            // Storage::disk('local')->put('public/images/fotos' . '/' . $nombre_foto, $img, 'public');
+            Storage::disk('local')->put('public/images/fotos' . '/' . $nombre_foto, $img, 'public');
         }
         
         
@@ -127,5 +127,6 @@ class IndexController extends BaseController
             // Storage::disk('local')->put('public/images/fotos' . '/' . $nombre_foto, $img, 'public');
         }
     }
+    
 
 }

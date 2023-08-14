@@ -23,23 +23,27 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', function () {
+            return Inertia::render('Dashboard');
+        })->name('dashboard');
 
-Route::get('/modmovies', function () {
-        return Inertia::render('Modmovies');
-    })->name('modmovies');
+    Route::get('/modmovies', function () {
+            return Inertia::render('Modmovies');
+        })->name('modmovies');
 
-Route::post('/modificarmovie', [IndexController::class, 'mod'])
-    ->name('mod');
+    Route::post('/modificarmovie', [IndexController::class, 'mod'])
+        ->name('mod');
 
 
-Route::put('/modifiMov', [IndexController::class, 'modmov'])
-    ->name('modmov');
+    Route::put('/modifiMov', [IndexController::class, 'modmov'])
+        ->name('modmov');
 
-Route::post('/modifiMov', [IndexController::class, 'modimg'])
-    ->name('modimg');
+    Route::post('/modifiMov', [IndexController::class, 'modimg'])
+        ->name('modimg');
+
+    Route::get('/register1', function () {
+            return Inertia::render('Auth/Register');
+        })->name('register1');
 
 // Route::resource('admin/users',MovieController::class)
 //     ->only('index','edit','create','store','update','show')
@@ -87,5 +91,10 @@ Route::get('/movie1', function () {
 Route::get('/mov',[MovieController::class, 'mostrar'])
     // ->middleware('auth')
     ->name('mov')
+    ;
+
+Route::get('/mov1',[MovieController::class, 'mostrar1'])
+    // ->middleware('auth')
+    ->name('mov1')
     ;
 
